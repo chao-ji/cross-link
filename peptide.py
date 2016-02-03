@@ -1,9 +1,9 @@
 class Peptide:
-	def __init__(self, seq, pro_id, modification, mass, is_nterm):
+	def __init__(self, seq, pro_id, modif, mass, is_nterm):
 		self.seq = seq
 		self.length = len(self.seq)
 		self.pro_id = [pro_id]
-		self.modification = modification
+		self.modif = modif
 		self.mass_array = self.get_mass_array(mass)
 		self.total_res_mass = self.get_total_res_mass()
 		self.prec_mass = self.get_prec_mass(mass)
@@ -12,8 +12,8 @@ class Peptide:
 	def get_mass_array(self, mass):
 		mass_array = []
 		seq = self.seq
-		pos = self.modification['position']
-		delta_mass = self.modification['delta_mass']
+		pos = self.modif['position']
+		delta_mass = self.modif['delta_mass']
 		
 		for i in range(self.length):
 			mass_array.append(mass[seq[i].upper()])

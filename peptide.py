@@ -1,25 +1,25 @@
 class Peptide:
-	def __init__(self, sequence, protein_id, modification, mass, is_nterm):
-		self.sequence = sequence
-		self.length = len(self.sequence)
-		self.protein_id = [protein_id]
+	def __init__(self, seq, pro_id, modification, mass, is_nterm):
+		self.seq = seq
+		self.length = len(self.seq)
+		self.pro_id = [pro_id]
 		self.modification = modification
 		self.mass_array = self.get_mass_array(mass)
-		self.total_residue_mass = self.get_total_residue_mass()
-		self.precursor_mass = self.get_precursor_mass(mass)
+		self.total_res_mass = self.get_total_res_mass()
+		self.prec_mass = self.get_prec_mass(mass)
 		self.is_nterm = is_nterm
 
 	def get_mass_array(self, mass):
 		mass_array = []
-		sequence = self.sequence
-		position = self.modification['position']
+		seq = self.seq
+		pos = self.modification['position']
 		delta_mass = self.modification['delta_mass']
 		
 		for i in range(self.length):
-			mass_array.append(mass[sequence[i].upper()])
+			mass_array.append(mass[seq[i].upper()])
 			
-		for i in range(len(position)):
-			mass_array[position[i]] += delta_mass[i]
+		for i in range(len(pos)):
+			mass_array[pos[i]] += delta_mass[i]
 			
 		return mass_array
 		
@@ -28,27 +28,27 @@ class Peptide:
 		return total_residue_mass
 		
 	def get_precursor_mass(self, mass):
-		precursor_mass = self.total_residue_mass
-		precursor_mass = precursor_mass + mass['Hatom'] * 2 + mass['Oatom']
-		return pm
+		prec_mass = self.total_res_mass
+		prec_mass = prec_mass + mass['Hatom'] * 2 + mass['Oatom']
+		return prec_mass
 		
 	def get_mass_list(self, mass, param):
 		mass_list = []
 		fwd_mass = 0
 		mass_array = self.mass_array
-		total_residue_mass = self.total_residue_mass
+		total_res_mass = self.total_res_mass
 		use_a_ion = param['use_a_ion']
 
 		for i in range(self.length - 1):
-			fragment = dict()
+			frag = dict()
 			fwd_mass += mass_array[i]
-			rev_mass = total_residue_mass - fwd_mass
-			fragment['b'] = fwd_mass + mass['b_ion_res']
-			fragment['y'] = rev_mass + mass['y_ion_res']
+			rev_mass = total_res_mass - fwd_mass
+			frag['b'] = fwd_mass + mass['b_ion_res']
+			frag['y'] = rev_mass + mass['y_ion_res']
 			
 			if use_a_ion:
-				fragment['a'] = fwd_mass + mass['a_ion_res']
+				frag['a'] = fwd_mass + mass['a_ion_res']
 				
-			mass_list.append(fragment)
+			mass_list.append(frag)
 			
-		return mass_list	
+		return mass_list

@@ -28,8 +28,8 @@ class Peptide:
 		return total_residue_mass
 		
 	def get_precursor_mass(self, mass):
-		pm = self.total_residue_mass
-		pm = pm + mass['Hatom'] * 2 + mass['Oatom']
+		precursor_mass = self.total_residue_mass
+		precursor_mass = precursor_mass + mass['Hatom'] * 2 + mass['Oatom']
 		return pm
 		
 	def get_mass_list(self, mass, param):
